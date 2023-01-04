@@ -22,3 +22,23 @@
 
  <p>첫째 줄부터 N개의 줄에 오름차순으로 정렬한 결과를 한 줄에 하나씩 출력한다.</p>
 
+<br>
+<br>
+
+#### 이렇게 작성하면 메모리 초과 발생
+
+```python
+import sys
+
+n = int(sys.stdin.readline())
+data = []
+
+for _ in range(n) :
+    data.append(int(sys.stdin.readline()))
+
+data = sorted(data)
+
+for i in data :
+    print(i)
+    
+```
