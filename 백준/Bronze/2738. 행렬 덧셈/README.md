@@ -22,3 +22,27 @@
 
  <p>첫째 줄부터 N개의 줄에 행렬 A와 B를 더한 행렬을 출력한다. 행렬의 각 원소는 공백으로 구분한다.</p>
 
+<br>
+<br>
+
+### 런타임 에러 (결과는 맞게 나옴)
+```python
+import sys
+
+n, p = map(int, sys.stdin.readline().split())
+
+A, B = [], []
+
+for row in range(n) :
+    row = list(map(int, sys.stdin.readline().split()))
+    A.append(row)
+
+for row in range(p) :
+    row = list(map(int, sys.stdin.readline().split()))
+    B.append(row)
+
+for row in range(n) :
+    for col in range(p) :
+        print(A[row][col] + B[row][col], end=' ')
+    print()
+```
