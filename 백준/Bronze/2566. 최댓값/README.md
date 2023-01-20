@@ -151,3 +151,41 @@
 
  <p>첫째 줄에 최댓값을 출력하고, 둘째 줄에 최댓값이 위치한 행 번호와 열 번호를 빈칸을 사이에 두고 차례로 출력한다. 최댓값이 두 개 이상인 경우 그 중 한 곳의 위치를 출력한다.</p>
 
+
+<br>
+<br>
+
+### "틀렸습니다"
+```python
+import sys
+
+max_num = 0
+x=0
+y=0
+
+for i in range(9) :
+    row = list(map(int, sys.stdin.readline().split()))
+    if max(row) > max_num :
+        max_num = max(row)
+        x = i+1
+        y = row.index(max_num) + 1
+print(max_num)
+print(x, y)
+```
+<br>
+
+### "런타임 에러" 이유 잘 모르겠음
+```python
+import sys
+
+max_num = 0
+
+for i in range(9) :
+    row = list(map(int, sys.stdin.readline().split()))
+    if max(row) > max_num :
+        max_num = max(row)
+        x = i
+        y = row.index(max_num)
+print(max_num)
+print(x+1, y+1)
+```
