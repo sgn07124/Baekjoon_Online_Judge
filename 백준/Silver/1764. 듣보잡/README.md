@@ -24,3 +24,28 @@
 
  <p>듣보잡의 수와 그 명단을 사전순으로 출력한다.</p>
 
+<br>
+<br>
+
+### 시간초과 → 이중 for문을 없애고 교집합을 이용해서 해결함
+```python
+import sys
+
+n, m = map(int, sys.stdin.readline().split())
+N = []
+M = []
+for i in range(n) :  #  n : 듣도 못한 사람
+    N.append(sys.stdin.readline())
+for j in range(m) :  #  m : 보도 못한 사람
+    M.append(sys.stdin.readline())
+cnt = 0
+data = []
+for i in range(len(N)) :
+    for j in range(len(M)) :
+        if N[i] == M[j] :
+            cnt += 1
+            data.append(N[i])
+print(cnt)
+for j in range(len(data)) :
+    print(data[j], end='')
+```
