@@ -26,3 +26,18 @@
 
  <p>첫째 줄부터 S의 접미사를 사전순으로 한 줄에 하나씩 출력한다.</p>
 
+<br>
+<br>
+
+### "출력 형식이 잘못되었습니다"
+```python
+import sys
+
+s = sys.stdin.readline()
+data = []
+for i in range(len(s)) :
+    data.append(s[i::])
+data.sort(reverse=False)
+for i in range(len(data)) :
+    print(data[i], end='')
+```
