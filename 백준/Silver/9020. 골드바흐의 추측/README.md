@@ -26,3 +26,39 @@
 
  <p>각 테스트 케이스에 대해서 주어진 n의 골드바흐 파티션을 출력한다. 출력하는 소수는 작은 것부터 먼저 출력하며, 공백으로 구분한다.</p>
 
+<br>
+<br>
+
+### "시간초과" 발생
+```python
+import math
+
+def is_Prime(x) :
+    if x == 1 :
+        return False
+    for i in range(2, int(math.sqrt(x)) + 1) :
+        if x % i == 0 :
+            return False
+    return True
+
+def goldPartition(x) :
+    data = []
+    for i in range(2, x//2+1) :
+        if is_Prime(i) and is_Prime(x-i) :
+            if not data :
+                data.append(i)
+                data.append(x-i)
+            else :
+                if data[1] - data[0] > x - 2*i :
+                    data[0] = i
+                    data[1] = x-i
+    return data
+
+T = int(input())
+
+for i in range(T) :
+    n = int(input())
+    result = goldPartition(n)
+
+    print(*result)
+    ```
