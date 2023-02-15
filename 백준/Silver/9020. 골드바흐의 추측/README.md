@@ -61,4 +61,4 @@ for i in range(T) :
     result = goldPartition(n)
 
     print(*result)
-    ```
+```
