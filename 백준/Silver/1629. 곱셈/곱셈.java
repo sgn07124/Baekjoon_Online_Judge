@@ -4,7 +4,7 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-    static int A, B, C, cnt = 0;
+    static long C;
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
     public static void main(String[] args) throws IOException {
@@ -13,11 +13,11 @@ public class Main {
         StringTokenizer st;
 
         st = new StringTokenizer(br.readLine());
-        A = Integer.parseInt(st.nextToken());
-        B = Integer.parseInt(st.nextToken());
+        long A = Integer.parseInt(st.nextToken());
+        long B = Integer.parseInt(st.nextToken());
         C = Integer.parseInt(st.nextToken());
 
-        long result = pow(A, B, C);
+        long result = pow(A, B);
         bw.write(result + "\n");
         bw.flush();
         bw.close();
@@ -26,24 +26,28 @@ public class Main {
     /**
      * 분할 정복을 이용한 거듭제곱 계산 함수로 a^b를 계산하면서 중간에 c로 나눈 나머지를 유지하여 숫자가 너무 커지지 않도록 방지(BufferOverflow)
      */
-    public static long pow(long a, long b, long c) {
-        // 지수가 0인 경우 (a^0=1) -> 종료
-        if (b == 0) return 1;
+    public static long pow(long A, long exponent) {
+        // 지수가 1일 경우 A^1 이므로 A % C를 리턴
+        if (exponent == 1) return A % C;
 
-        // 재귀로 b를 반으로 나누어 계산 -> 문제를 더 작은 문제로 나누어 해결(분할 정복)
-        long half = pow(a, b / 2, c);
+        // 지수의 절반에 해당하는 A^(B/2)를 구한다.
+        long temp = pow(A, exponent/2);
 
-        // half * half는 a^(b/2) * a^(b/2) = a^b의 형태가 됨.
-        // 이를 c로 모듈러 연산하여 큰 수가 되는 것을 방지
-        long temp = (half * half) % c;
-
-        // b가 짝수일 경우, a^b를 그대로 반환(temp)
-        if (b % 2 == 0) {
-            return temp;
-        } else {
-            // b가 홀수일 경우, a를 추가로 곱한 후 c로 나눈 나머지를 계산하여 반환. -> a^b = a * a^(b-1)의 형태를 따름. 
-            // 중간에 overflow를 방지하기 위해 모듈러 연산을 함
-            return (temp * a) % c;
+        if (exponent % 2 == 1) {
+            /**
+             * 현재 지수가 홀수인 경우?
+             * ex) exponent = 홀수 -> A^exponent = A^(exponent/2) * A^(exponent/2) * A
+             * 가 되므로 A를 한 번 더 곱해줘야 한다.
+             *
+             * return temp * temp * A % C로 진행하면 long 형의 범위를 넘김
+             * -> 모듈러 공식 사용 => (a * b) % C = (a % C * b % C) % C
+             *  (temp * temp * a) % C = ((temp * temp % C) * (a % C)) % C = (((temp * temp % C) % C) * ((A % C) % C))) % C 인데 (x%C)%C = x%C 이므로
+             *  = (temp * temp % C) * (a % C) % C = (temp * temp % C) * a % C 가 됨.
+             */
+            //return temp * temp * A % C;
+            return (temp * temp % C) * A % C;
         }
+        // 지수가 짝수 인 경우
+        return temp * temp % C;
     }
 }
