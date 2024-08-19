@@ -2,8 +2,6 @@ import java.io.*;
 import java.util.Stack;
 
 public class Main {
-    public static Stack<Integer> stack = new Stack<>();
-    public static long ans; // long으로 선언!
 
     public static void main(String[] args) throws IOException {
 
@@ -11,6 +9,9 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         int N = Integer.parseInt(br.readLine());
+
+        Stack<Integer> stack = new Stack<>();
+        long cnt = 0;
 
         for(int i=0; i<N; i++) {
 
@@ -24,10 +25,10 @@ public class Main {
                 }
                 else break;
             }
-            ans += stack.size(); //스택 사이즈를 더함으로써, 벤치마킹 가능한 개수를 더해준다.
+            cnt += stack.size(); //스택 사이즈를 더함으로써, 벤치마킹 가능한 개수를 더해준다.
             stack.push(height); //i번째 빌딩의 높이를 넣어준다.
         }
-        bw.write(String.valueOf(ans));
+        bw.write(String.valueOf(cnt));
         bw.close();
     }
 }
