@@ -9,16 +9,18 @@ public class Main {
         String input = sc.nextLine();
         String search = sc.nextLine();
 
-
+        int startIndex = 0;
         int cnt = 0;
 
-        for (int i = 0; i <= input.length() - search.length(); i++) {
-            String comp = input.substring(i, i + search.length());
-            if (search.equals(comp)) {
-                cnt++;
-                i += search.length() - 1;
+        while (true) {
+            int findIndex = input.indexOf(search, startIndex);
+            if (findIndex < 0) {
+                break;
             }
+            startIndex = findIndex + search.length();
+            cnt++;
         }
+
         System.out.println(cnt);
     }
 }
