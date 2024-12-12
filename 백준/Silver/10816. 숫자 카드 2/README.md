@@ -4,11 +4,15 @@
 
 ### 성능 요약
 
-메모리: 157788 KB, 시간: 552 ms
+메모리: 132504 KB, 시간: 1404 ms
 
 ### 분류
 
-이분 탐색(binary_search), 자료 구조(data_structures), 해시를 사용한 집합과 맵(hash_set), 정렬(sorting)
+이분 탐색, 자료 구조, 해시를 사용한 집합과 맵, 정렬
+
+### 제출 일자
+
+2024년 12월 12일 18:18:52
 
 ### 문제 설명
 
@@ -24,23 +28,3 @@
 
  <p>첫째 줄에 입력으로 주어진 M개의 수에 대해서, 각 수가 적힌 숫자 카드를 상근이가 몇 개 가지고 있는지를 공백으로 구분해 출력한다.</p>
 
-<br>
-<br>
-
-#### 시간초과 발생
-```python
-import sys
-n = int(sys.stdin.readline())
-data = list(map(int, sys.stdin.readline().split()))
-m = int(sys.stdin.readline())
-check = list(map(int, sys.stdin.readline().split()))
-result = []
-
-for i in range(m) :
-    cnt = 0
-    for j in range(n) :
-        if check[i] == data[j] :
-            cnt += 1
-    result.append(cnt)
-print(result)
-```
