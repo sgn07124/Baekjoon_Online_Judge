@@ -1,84 +1,69 @@
-import java.util.Arrays;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Main {
-    public static int[][] branch;
-    public static boolean[] visit; // 초기값 null
-    public static Queue<Integer> queue;
-    public static int N;
-    public static int M;
-    public static int V;
+    static int N, M, V;
+    static int [][] branch;
+    static boolean [] visit;
+    static StringBuilder sb = new StringBuilder();
+    static Queue<Integer> queue;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-    public static void dfs(int start) {  // start → V
-        visit[start] = true;  // 방문한 정점을 한 번 더 가면 안됨
-        System.out.print(start + " ");
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        V = Integer.parseInt(st.nextToken());
 
-        for(int i = 1; i <= N; i++) {
-            if(branch[start][i] == 1 && visit[i] == false) { // 방문하지 않은 정점인 경우,
+        branch = new int[1001][1001];
+        visit = new boolean[1001];
+
+        // 인접 행렬 (양방향)
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
+            branch[x][y] = branch[y][x] = 1;
+        }
+
+        dfs(V);
+        visit = new boolean[1001];
+        sb.append('\n');
+        bfs(V);
+        System.out.println(sb);
+    }
+    private static void dfs(int start) {
+        visit[start] = true;
+        sb.append(start).append(' ');
+
+        for (int i = 1; i <= N; i++) {
+            if (branch[start][i] == 1 && !visit[i]) {
                 visit[i] = true;
                 dfs(i);
             }
         }
     }
 
-    public static void bfs(int start) {
-        queue = new LinkedList<Integer>();
-        queue.add(start);  // 첫 지점
+    private static void bfs(int start) {
+        queue = new LinkedList<>();
+        queue.add(start);
         visit[start] = true;
-        System.out.print(start + " ");
+        sb.append(start).append(' ');
 
-        while(!queue.isEmpty()) {
-            int tmp = queue.poll();
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
 
-            for(int i = 1; i<branch.length; i++) {
-                if (branch[tmp][i] == 1 && visit[i] == false) {
+            for (int i = 1; i < branch.length; i++) {
+                if (branch[node][i] == 1 && !visit[i]) {
                     queue.add(i);
                     visit[i] = true;
-                    System.out.print(i + " ");
+                    sb.append(i).append(' ');
                 }
             }
         }
     }
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();  // 정점
-        M = sc.nextInt();  // 간선
-        V = sc.nextInt();  // start
-
-        branch = new int[1001][1001];
-        visit = new boolean[1001];
-
-        /* 인접 행렬 생성 */
-        for (int i = 0; i < M; i++) {
-            int a = sc.nextInt();
-            int b = sc.nextInt();
-            branch[a][b] = branch[b][a] = 1;  // 무방향 그래프
-        }
-
-        /* dfs */
-        dfs(V);
-
-        System.out.println();
-
-        Arrays.fill(visit, false);  // visit을 false로 초기화
-
-        /* bfs */
-        bfs(V);
-    }
-
-
 }
-/*
-0 1 2 3 4
-1 0 1 1 1
-2 1 0 0 1
-3 1 0 0 1
-4 1 1 1 0
-from(행) to(열)
-start = 1 : 1-> 2 -> 4 -> 3
- */
-
-// 이거 dfs 부분에서 start만 출력되고 dfs(i)를 실행하지 못하는거 같음
