@@ -1,27 +1,27 @@
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
-        int k = sc.nextInt();
-        Stack<Integer> st = new Stack<Integer>();
-        for (int i = 0; i < k; i++) {
-            int n = sc.nextInt();
-            if (n != 0) {
-                st.push(n);
-            } else if (n == 0) {
-                st.pop();
-            }
-            // System.out.println("st : " + st);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int k = Integer.parseInt(br.readLine());
+        Stack<Integer> stack = new Stack<>();
+        
+        while (k-- > 0) {
+        	int n = Integer.parseInt(br.readLine());
+        	
+        	if (n == 0) {
+        		stack.pop();
+        	} else {
+        		stack.push(n);
+        	}
         }
-        // System.out.println("st : " + st);
-        int size = st.size();
-        int total = 0;
+        int size = stack.size();
+        int sum = 0;
+        
         for (int i = 0; i < size; i++) {
-            total += st.pop();
+        	sum += stack.pop();
         }
-        System.out.println(total);
+        System.out.println(sum);
     }
 }
