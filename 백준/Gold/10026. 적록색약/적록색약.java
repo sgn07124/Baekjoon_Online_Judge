@@ -1,87 +1,88 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.Queue;
+import java.util.*;
+import java.io.*;
 
 public class Main {
-    static int N;
+    static int n;
     static char [][] graph;
     static boolean [][] visited;
-    static Queue<int[]> queue;
+    static Queue<int[]> queue;  // x, y로 기입
     static int [] dx = {-1, 1, 0, 0};
-    static int [] dy = {0, 0, -1, 1};
-
-    public static void main(String[] args) throws IOException {
+    static int [] dy = {0, 0, 1, -1};
+    public static void main(String [] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        // 적록색약인 사람: R-G를 하나로 카운트.
         StringBuilder sb = new StringBuilder();
-
-        N = Integer.parseInt(br.readLine());
-        graph = new char[N][N];
-        visited = new boolean[N][N];
-
-
-        for (int i = 0; i < N; i++) {
+        
+        n = Integer.parseInt(br.readLine());
+        graph = new char[n][n];
+        
+        // 입력
+        for (int i = 0; i < n; i++) {
             String line = br.readLine();
-            for (int j = 0; j < N; j++) {
+            for (int j = 0; j < n; j++) {
                 graph[i][j] = line.charAt(j);
             }
         }
-
-        int regions = 0;
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
+        
+        // 적록색약이 아닌 사람이 봤을 때의 구역의 수
+        int region = 0;  // 구역 수
+        visited = new boolean[n][n];  // 방문 여부
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                // 방문하지 않은 지역 == 색이 바뀌는 구역의 첫 시작점
                 if (!visited[i][j]) {
                     bfs(i, j, false);
-                    regions++;
+                    region++;
                 }
             }
         }
-        sb.append(regions).append(" ");
-        regions = 0;
-        visited = new boolean[N][N];
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
+        sb.append(region).append(" ");
+        
+        // 적록색약인 사람이 봤을 때의 구역의 수
+        region = 0;
+        visited = new boolean[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
                 if (!visited[i][j]) {
                     bfs(i, j, true);
-                    regions++;
+                    region++;
                 }
             }
         }
-        sb.append(regions);
+        sb.append(region);
         System.out.println(sb);
     }
-
+    
     static void bfs(int x, int y, boolean isBlind) {
         queue = new ArrayDeque<>();
         queue.add(new int[] {x, y});
-        visited[x][y] = true;
-        char startColor = graph[x][y];
-
+        visited[x][y] = true;  // 방문 처리
+        char startColor = graph[x][y];  // 시작 색상
+        
         while (!queue.isEmpty()) {
+            // 현재 x, y 값
             int [] current = queue.poll();
             int cx = current[0];
             int cy = current[1];
-
+            
+            // 상하좌우로 다음 값을 탐색
             for (int i = 0; i < 4; i++) {
                 int nx = cx + dx[i];
                 int ny = cy + dy[i];
-
-                if (nx >= 0 && nx < N && ny >= 0 && ny < N && !visited[nx][ny]) {
+                
+                // 다음 좌표가 범위 내에 있고, 방문하지 않은 경우
+                if (nx >= 0 && ny >= 0 && nx < n && ny < n && !visited[nx][ny]) {
+                    // 적록색약인 경우
                     if (isBlind) {
                         if ((startColor == 'R' || startColor == 'G') && (graph[nx][ny] == 'R' || graph[nx][ny] == 'G')) {
-                            // 현재 색상이 R 또는 G이고, 다음 색상도 R 또는 G인 경우
-                            queue.add(new int[]{nx, ny});
+                            queue.offer(new int[] {nx, ny});
                             visited[nx][ny] = true;
-                        } else if (startColor == graph[nx][ny]) {  // 다음 색상도 startColor와 같다면?
-                            // 현재 색상이 B인 경우, B만 탐색
-                            queue.add(new int[]{nx, ny});
+                        } else if (startColor == 'B' && graph[nx][ny] == 'B') {
+                            queue.offer(new int[] {nx, ny});
                             visited[nx][ny] = true;
                         }
-                    } else {
-                        if (graph[nx][ny] == startColor) {
-                            queue.add(new int[]{nx, ny});
+                    } else {  // 적록색약이 아닌 경우
+                        if (startColor == graph[nx][ny]) {
+                            queue.offer(new int[] {nx, ny});
                             visited[nx][ny] = true;
                         }
                     }
