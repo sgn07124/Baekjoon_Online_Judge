@@ -1,39 +1,46 @@
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
 
-public class Main {
-    public static int[][] branch;
-    public static boolean[] visit;
-    public static int V;  // 컴퓨터 수
-    public static int E;  // edge
-    public static int start;  // 시작 정점
-    public static int cnt = 0;
-
-    public static int dfs(int start) {
-        visit[start] = true;
-        for (int i = 1; i <= V; i++) {
-            if (branch[start][i] == 1 && visit[i] == false) {
-                cnt++;
-                dfs(i);
+class Main {
+    static int N, M;
+    static int [][] graph;
+    static boolean [] visited;
+    static Queue<Integer> queue = new LinkedList<>();
+    public static void main(String[] args) throws IOException {
+         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+         StringTokenizer st;
+         N = Integer.parseInt(br.readLine());  // vertex
+         M = Integer.parseInt(br.readLine());  // edge
+         
+         graph = new int [N + 1][N + 1];
+         visited = new boolean[N + 1];
+         
+         for (int i = 0; i < M; i++) {
+             st = new StringTokenizer(br.readLine());
+             int a = Integer.parseInt(st.nextToken());
+             int b = Integer.parseInt(st.nextToken());
+             graph[a][b] = graph[b][a] = 1;
+         }
+         
+         bfs(1);
+    }
+    
+    static void bfs(int node) {
+        int count = 0;
+        queue.offer(node);
+        visited[node] = true;
+        
+        while(!queue.isEmpty()) {
+            int tmp = queue.poll();
+            
+            for (int next = 1; next <= N; next++) {
+                if (graph[tmp][next] == 1 && !visited[next]) {
+                    queue.offer(next);
+                    visited[next] = true;
+                    count++;
+                }
             }
         }
-        return cnt;
+        System.out.println(count);
     }
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        V = sc.nextInt();
-        E = sc.nextInt();
-        start = 1;
-        branch = new int[101][101];  // 컴퓨터 수 최대 100대
-        visit = new boolean[101];
-
-        /* 인접 행렬 생성 */
-        for (int i = 0; i < E; i++) {
-            int a = sc.nextInt();
-            int b = sc.nextInt();
-            branch[a][b] = branch[b][a] = 1;  // 무방향 그래프
-        }
-        System.out.println(dfs(1));
-    }
-
 }
